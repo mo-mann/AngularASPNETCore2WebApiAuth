@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.Swagger;
 
 
 namespace AngularASPNETCore2WebApiAuth
@@ -114,6 +115,11 @@ namespace AngularASPNETCore2WebApiAuth
 
       services.AddAutoMapper();
       services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+
+      services.AddSwaggerGen(c =>
+      {
+        c.SwaggerDoc("v1", new Info { Title = "Angular ASP.NET Core 2.1 API", Version = "v1" });
+      });
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -146,6 +152,14 @@ namespace AngularASPNETCore2WebApiAuth
       app.UseDefaultFiles();
       app.UseStaticFiles();
       app.UseMvc();
+
+      app.UseSwagger();
+
+      app.UseSwaggerUI(c =>
+      {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Angular ASP.NET Core 2.1 API V1");
+        //c.RoutePrefix = string.Empty;
+      });
     }
   }
 }
